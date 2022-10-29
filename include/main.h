@@ -42,9 +42,10 @@
 //#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 #include "EZ-Template/api.hpp"
-
-// More includes here...
 #include "autons.hpp"
+#include "675E/robot-config.hpp"
+#include "675E/driver-control.hpp"
+#include "675E/auton-control.hpp"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
