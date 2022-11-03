@@ -7,41 +7,65 @@ permalink: /
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  
 
-# EZ-Template
-Simple plug-and-play PROS template that handles drive base functions for VEX robots.  
+## Welcome
 
+This is the Code Repository for the VEX VRC Team, 675E (Robodragons Echo).
 
-[EZ-Template Version](https://github.com/EZ-Robotics/EZ-Template): 2.1.1  
+This repository will host all of the code as well as active changes and logs for each competition revision.
 
-[Autonomous routines that used EZ-Template](https://photos.app.goo.gl/yRwuvmq7hDoM4f6EA)
+## Members and Team Structure (Insert Team Picture Below)
 
-## Download and Installation  
-1) Download the latest example project [here](https://github.com/EZ-Robotics/EZ-Template/releases/latest).  Extract the zip, and open it in PROS.   
-2) In `src/main.cpp`, configure drive and IMU ports to what they are on your robot.  Be sure to read the comments!    
-3) Configure your wheel size and cartridge.  Remember that 4" omni wheels are actually 4.125!    
-4) In `src/main.cpp`, at the bottom in `void opcontrol()`, decide how you'd like to control your robot!  Any flavor of arcade or tank!    
-5) Turn the robot on and use it in driver control.  Make sure the ports are correct and reversed correctly!    
-6) To test the test autonomous modes, plug into a competition switch and select the autonomous mode on the brain screen by pressing the left and right buttons!  The current page will be the autonomous that runs.  For making new autonomous routines, check `src/autons.cpp` for examples on how to use the drive functions.  
+* Leadership
 
-## Upgrading  
-*Note: this only works for 2.0.0 and beyond.  You cannot upgrade from 1.X.X to 2.X.X.*  
-1) Download the most recent EZ-Template [here](https://github.com/EZ-Robotics/EZ-Template/releases/latest).  
-2) Move the file to your project.  
-3) Open terminal or command prompt, and `cd` into your projects directory.    
-4) Run this command from terminal `prosv5 c fetch EZ-Template@2.1.1.zip`.  
-5) Apply the library to the project `prosv5 c apply EZ-Template`.  
-6) Put `#include "EZ-Template/api.hpp"` in your `include/main.h`.  
+  * Benny Z
+    * Rohan A
+  * Nik G
 
-## Tutorials
-[Check out our tutorials here!](https://ez-robotics.github.io/EZ-Template/tutorials)
+* Coders
 
-## Docs
-[Read the docs here!](https://ez-robotics.github.io/EZ-Template/docs)
+  * Main coder: Nik G
+  * Secondary Coder: BanAhn D
+  * Mentees: Neal J, Calvin T, Benny Z
+* CAD and Design
 
-## Additing Autonomous Routines
-[Check out the tutorial on adding new autonomous routines here!](https://ez-robotics.github.io/EZ-Template/docs/Tutorials/autons.html)
+  * Main CAD-ders: Nik G and LanAhn D
+  * Mentees: Benny Z
+* Builders
 
+  * Main Builder: Benny Z
+  * Calvin T, LanAhn D, BanAhn D, Neal J, Nik G, Joseph T
+* Notebookers
 
-## License
-This project is licensed under the Mozilla Public License, version 2.0 - see the [LICENSE](LICENSE)
-file for the full license.
+  * Nik G, Benny Z
+
+* Driver
+  * Primary: Rohan A
+  * Secondary: BanAhn D
+* Coach and Strategist:
+  * Calvin T
+
+## Tucker HS Comp - 10/15/2022
+
+* Drivetrain:
+  * 6 Motor, 333 RPM on 4, 3.25 omni wheels, with a 3.25 traction wheel in the center of each side
+  * No odometry pods; using built-in motor encoders for PID and tracking
+* Intake / Rollers:
+  * 600 RPM directly chained to the driven shafts
+* Flywheel:
+  * 600 RPM geared to 3600 RPM
+  * 4 in flexhweel with 36 tooth gear in the middle
+* Indexer:
+  * Single Acting Cylinder on lever arm
+  * Lever arm for Torque
+
+## Paul Duke HS Comp - 10/29/2022
+
+* Drivetrain:
+  * No Changes
+* Intake / Rollers:
+  * No Changes
+* Flywheel:
+  * No Changes
+* Indexer:
+  * Double Acting Cylinder on push in/out
+  
