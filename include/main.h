@@ -46,6 +46,7 @@
 #include "675E/robot-config.hpp"
 #include "675E/driver-control.hpp"
 #include "675E/auton-control.hpp"
+#include "675E/helper-functions.hpp"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
