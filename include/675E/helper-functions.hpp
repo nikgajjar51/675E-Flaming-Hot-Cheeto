@@ -1,2 +1,4 @@
+#include "EZ-Template/drive/drive.hpp"
 #include "api.h"
-extern void turn_degrees_pid(void*);
+void triple_shooter_macro();
+//void turn_pid_180_macro(void);

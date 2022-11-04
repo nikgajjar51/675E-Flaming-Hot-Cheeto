@@ -1,6 +1,6 @@
 ---
 layout: default
-title: EZ-Template
+title: 675E Log and Structure
 nav_order: 1
 permalink: /
 ---

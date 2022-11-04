@@ -1,7 +1,9 @@
 #include "autons.hpp"
+
 #include "main.h"
+#include "pros/rtos.hpp"
 const int DRIVE_SPEED = 110;
-const int TURN_SPEED  = 90;
+const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
 // Constants
@@ -29,7 +31,6 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
 
-
   chassis.set_drive_pid(24, DRIVE_SPEED, true);
   chassis.wait_drive();
 
@@ -43,7 +44,6 @@ void drive_example() {
 void turn_example() {
   // The first parameter is target degrees
   // The second parameter is max speed the robot will drive at
-
 
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
@@ -75,11 +75,10 @@ void drive_and_turn() {
 void wait_until_change_speed() {
   // wait_until will wait until the robot gets to a desired position
 
-
   // When the robot gets to 6 inches, the robot will travel the remaining distance at a max speed of 40
   chassis.set_drive_pid(24, DRIVE_SPEED, true);
   chassis.wait_until(6);
-  chassis.set_max_speed(40); // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 40 speed
+  chassis.set_max_speed(40);  // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 40 speed
   chassis.wait_drive();
 
   chassis.set_turn_pid(45, TURN_SPEED);
@@ -94,7 +93,7 @@ void wait_until_change_speed() {
   // When the robot gets to -6 inches, the robot will travel the remaining distance at a max speed of 40
   chassis.set_drive_pid(-24, DRIVE_SPEED, true);
   chassis.wait_until(-6);
-  chassis.set_max_speed(40); // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 40 speed
+  chassis.set_max_speed(40);  // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 40 speed
   chassis.wait_drive();
 }
 // Swing Example
@@ -102,7 +101,6 @@ void swing_example() {
   // The first parameter is ez::LEFT_SWING or ez::RIGHT_SWING
   // The second parameter is target degrees
   // The third parameter is speed of the moving side of the drive
-
 
   chassis.set_swing_pid(ez::LEFT_SWING, 45, SWING_SPEED);
   chassis.wait_drive();
@@ -131,8 +129,8 @@ void combining_movements() {
   chassis.wait_drive();
 }
 // Interference example
-void tug (int attempts) {
-  for (int i=0; i<attempts-1; i++) {
+void tug(int attempts) {
+  for (int i = 0; i < attempts - 1; i++) {
     // Attempt to drive backwards
     printf("i - %i", i);
     chassis.set_drive_pid(-12, 127);
@@ -150,22 +148,47 @@ void tug (int attempts) {
     }
   }
 }
-// If there is no interference, robot will drive forward and turn 90 degrees. 
-// If interfered, robot will drive forward and then attempt to drive backwards. 
+// If there is no interference, robot will drive forward and turn 90 degrees.
+// If interfered, robot will drive forward and then attempt to drive backwards.
 void interfered_example() {
- chassis.set_drive_pid(24, DRIVE_SPEED, true);
- chassis.wait_drive();
+  chassis.set_drive_pid(24, DRIVE_SPEED, true);
+  chassis.wait_drive();
 
- if (chassis.interfered) {
-   tug(3);
-   return;
- }
+  if (chassis.interfered) {
+    tug(3);
+    return;
+  }
 
- chassis.set_turn_pid(90, TURN_SPEED);
- chassis.wait_drive();
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
 }
 
-void new_auton(){
-  chassis.set_drive_pid(10, 69);
+void side_2_tiles() {
+  chassis.set_drive_pid(20, 100);
   chassis.wait_drive();
+  intake.move_voltage(120000);
+  chassis.set_drive_pid(15, 25);
+  chassis.wait_drive();
+  chassis.set_turn_pid(-45, 100);
+  chassis.wait_drive();
+  chassis.set_drive_pid(35, 25);
+  chassis.wait_drive();
+  intake.move_voltage(0);
+  chassis.set_turn_pid(-135, 95);
+  chassis.wait_drive();
+  flywheel.move_voltage(120000);
+  pros::delay(2000);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(500);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(500);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(2000);
+  flywheel.move_voltage(0);
 }

@@ -4,15 +4,29 @@ Drive chassis(
     // Left Chassis Ports (negative port will reverse it)
     {-15, -14, -13}
     // Right Chassis Ports (negative port will reverse i)
-    ,{20, 19, 18}
+    ,
+    {20, 19, 18}
     // Inertial Sensor Port
-    ,11
+    ,
+    11
     // Wheel Diameter
-    ,3.25
+    ,
+    3.25
     // Cartridge RPM
-    ,600
+    ,
+    600
     // External Gear Ratio
-    ,1.66);
+    ,
+    1.66);
+void turn_pid_180_macro() {
+  while (true) {
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)==1) {
+      chassis.wait_drive();
+      chassis.set_turn_pid(180, 85);
+      chassis.wait_drive();
+    }
+  }
+}
 void initialize() {
   ez::print_ez_template();
   pros::delay(500);
@@ -21,7 +35,7 @@ void initialize() {
   chassis.set_curve_default(2, 2);
   default_constants();
   ez::as::auton_selector.add_autons({
-      Auton("nik smart", drive_and_turn),
+      Auton("nik smart", side_2_tiles),
   });
   chassis.initialize();
   ez::as::initialize();
@@ -58,12 +72,18 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  pros::Task turn_pid_180_task(turn_pid_180_macro);
+  // Boolean to set the triple shooter on or off
+  //   0 is off (single shooter)
+  //   1 is on (triple shooter)
+  triple_shooter = 0;
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
   while (true) {
     intake_control();
     flywheel_control();
     expansion_control();
+    // EZ-Template's function for drive code
     chassis.arcade_standard(ez::SPLIT);
     // Used for timer calculations)ez::util::DELAY_TIME)
     pros::delay(ez::util::DELAY_TIME);

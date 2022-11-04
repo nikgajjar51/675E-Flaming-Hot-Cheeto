@@ -18,10 +18,11 @@
 
 #ifndef _PROS_OPTICAL_H_
 #define _PROS_OPTICAL_H_
+#define PROS_ERR (INT32_MAX)
+#define PROS_ERR_F (INFINITY)
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "api.h"
 
 #define OPT_GESTURE_ERR (INT8_MAX)
 #define OPT_COUNT_ERR (INT16_MAX)
@@ -33,32 +34,36 @@ namespace pros {
 namespace c {
 #endif
 
-
-typedef enum optical_direction_e { NO_GESTURE = 0, UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4, ERROR = PROS_ERR } optical_direction_e_t;
+typedef enum optical_direction_e { NO_GESTURE = 0,
+                                   UP = 1,
+                                   DOWN = 2,
+                                   RIGHT = 3,
+                                   LEFT = 4,
+                                   ERROR = PROS_ERR } optical_direction_e_t;
 
 typedef struct optical_rgb_s {
-	double red;
-	double green;
-	double blue;
-	double brightness;
+  double red;
+  double green;
+  double blue;
+  double brightness;
 } optical_rgb_s_t;
 
 typedef struct optical_raw_s {
-	uint32_t clear;
-	uint32_t red;
-	uint32_t green;
-	uint32_t blue;
+  uint32_t clear;
+  uint32_t red;
+  uint32_t green;
+  uint32_t blue;
 } optical_raw_s_t;
 
 typedef struct optical_gesture_s {
-	uint8_t udata;
-	uint8_t ddata;
-	uint8_t ldata;
-	uint8_t rdata;
-	uint8_t type;
-	uint8_t pad;
-	uint16_t count;
-	uint32_t time;
+  uint8_t udata;
+  uint8_t ddata;
+  uint8_t ldata;
+  uint8_t rdata;
+  uint8_t type;
+  uint8_t pad;
+  uint16_t count;
+  uint32_t time;
 } optical_gesture_s_t;
 
 /**
@@ -161,7 +166,7 @@ int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return LED pwm value that ranges from 0 to 100 if the operation was 
+ * \return LED pwm value that ranges from 0 to 100 if the operation was
  * successful or PROS_ERR if the operation failed, setting errno.
  */
 int32_t optical_get_led_pwm(uint8_t port);
@@ -191,7 +196,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port);
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return raw rgb value if the operation was successful or an optical_raw_s_t 
+ * \return raw rgb value if the operation was successful or an optical_raw_s_t
  * with all fields set to PROS_ERR if the operation failed, setting errno.
  */
 optical_raw_s_t optical_get_raw(uint8_t port);
@@ -223,7 +228,7 @@ optical_direction_e_t optical_get_gesture(uint8_t port);
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return gesture value if the operation was successful or an optical_gesture_s_t 
+ * \return gesture value if the operation was successful or an optical_gesture_s_t
  * with all fields set to PROS_ERR if the operation failed, setting errno.
  */
 optical_gesture_s_t optical_get_gesture_raw(uint8_t port);
