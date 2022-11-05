@@ -192,3 +192,33 @@ void side_2_tiles() {
   pros::delay(2000);
   flywheel.move_voltage(0);
 }
+void side_1_tile() {
+  chassis.set_drive_pid(10, 100);
+  chassis.wait_drive();
+  intake.move_voltage(120000);
+  chassis.set_drive_pid(15, 25);
+  chassis.wait_drive();
+  chassis.set_turn_pid(-45, 100);
+  chassis.wait_drive();
+  chassis.set_drive_pid(10, 25);
+  chassis.wait_drive();
+  intake.move_voltage(12000);
+  flywheel.move_voltage(120000);
+  chassis.set_turn_pid(-135, 95);
+  chassis.set_drive_pid(20, 25);
+  chassis.wait_drive();
+  pros::delay(2000);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(500);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(500);
+  indexer.set_value(true);
+  pros::delay(10);
+  indexer.set_value(false);
+  pros::delay(2000);
+  flywheel.move_voltage(0);
+}
