@@ -174,9 +174,9 @@ void side_2_tiles() {
   chassis.set_drive_pid(35, 25);
   chassis.wait_drive();
   intake.move_voltage(0);
+  flywheel.move_voltage(120000);
   chassis.set_turn_pid(-135, 95);
   chassis.wait_drive();
-  flywheel.move_voltage(120000);
   pros::delay(2000);
   indexer.set_value(true);
   pros::delay(10);
