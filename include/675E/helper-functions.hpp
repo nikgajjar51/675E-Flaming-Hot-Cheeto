@@ -1,4 +1,12 @@
-#include "EZ-Template/drive/drive.hpp"
 #include "api.h"
-void triple_shooter_macro();
-//void turn_pid_180_macro(void);
+void intake_in();
+void intake_out();
+void intake_stop();
+void flywheel_low();
+void flywheel_high();
+void flywheel_stop();
+void drive_lock();
+int triple_shoot_function();
+int turn_pid_180_function();
+void triple_shoot();
+void turn_pid_180();
