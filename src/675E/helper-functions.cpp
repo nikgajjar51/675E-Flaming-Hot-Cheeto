@@ -1,11 +1,13 @@
 #include "675E/helper-functions.hpp"
 
+#include <string>
+
 #include "autons.hpp"
 #include "main.h"
 #include "pros/rtos.hpp"
 
 bool drive_lock_toggle;
-
+bool is_roller_at_desired_color = false;
 void intake_in() {
   intake.move_voltage(12000);
 }
@@ -38,18 +40,27 @@ void drive_lock() {
     master.rumble("..");
   }
 }
+/*int detect_roller_color() {
+  std::string desired_color;
+  if (desired_color == "red") {
+  }
+  while (roller_optical.get_rgb()  {0, 0, 0, 0}){
+    intake_out();
+  }
+    return is_roller_at_desired_color;
+}*/
 int triple_shoot_function() {
-  indexer.set_value(true);
+  indexer_pneum.set_value(true);
   pros::delay(100);
-  indexer.set_value(false);
+  indexer_pneum.set_value(false);
   pros::delay(1000);
-  indexer.set_value(true);
+  indexer_pneum.set_value(true);
   pros::delay(100);
-  indexer.set_value(false);
+  indexer_pneum.set_value(false);
   pros::delay(1000);
-  indexer.set_value(true);
+  indexer_pneum.set_value(true);
   pros::delay(100);
-  indexer.set_value(false);
+  indexer_pneum.set_value(false);
   pros::delay(1000);
   return 1;
 }

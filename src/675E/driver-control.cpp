@@ -16,7 +16,7 @@ void flywheel_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     if (triple_shooter_toggle == 0) {
       // Sets the indexer pneumatic to true (towards the flywheel in this case)
-      indexer.set_value(true);
+      indexer_pneum.set_value(true);
     } else if (triple_shooter_toggle == 1) {
       // Macro to triple shoot the shooter
       triple_shoot();
@@ -25,21 +25,21 @@ void flywheel_control() {
   // This else if statement is a continuation of the previous if-else iteration and is for if the R1 button is pressed.
   else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
     // Sets the indexer pneumatic to false (away from the flywheel in this case)
-    indexer.set_value(false);
+    indexer_pneum.set_value(false);
     // Spins the flywheel motor at 'high speed' (12000 mV or 12 V)
     flywheel_high();
   }
   // This else if statement is a continuation of the previous if-else iteration and is for if the R2 button is pressed.
   else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     // Sets the indexer pneumatic to false (away from the flywheel in this case)
-    indexer.set_value(false);
+    indexer_pneum.set_value(false);
     // Spins the flywheel motor at 'low speed' (9000 mV or 9 V)
     flywheel_low();
   }
   // This else statement is a continuation of the previous if-else iteration and is for if no button is pressed.
   else {
     // Sets the indexer pneumatic to false (away from the flywheel in this case)
-    indexer.set_value(false);
+    indexer_pneum.set_value(false);
     // Stops the flywheel motor
     flywheel_stop();
   }
@@ -61,8 +61,8 @@ void intake_control() {
 }
 void expansion_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_UP) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_X) == 1) {
-    expansion.set_value(false);
+    expansion_pneum.set_value(false);
   } else {
-    expansion.set_value(true);
+    expansion_pneum.set_value(true);
   }
 }
