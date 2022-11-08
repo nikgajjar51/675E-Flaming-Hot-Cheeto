@@ -1,10 +1,12 @@
 #include "autons.hpp"
 
 #include "main.h"
-#include "pros/rtos.hpp"
+
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
+const int drive_speed_high = 110;
+const int drive_speed_low = 25;
 
 // Constants
 //    It's best practice totune constants when the robot is empty and with heavier game objects, or with lifts up vs down.
@@ -23,53 +25,6 @@ void modified_exit_condition() {
   chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
-}
-// Drive Example
-void drive_example() {
-  // The first parameter is target inches
-  // The second parameter is max speed the robot will drive at
-  // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
-  // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
-
-  chassis.set_drive_pid(24, DRIVE_SPEED, true);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(-12, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(-12, DRIVE_SPEED);
-  chassis.wait_drive();
-}
-// Turn Example
-void turn_example() {
-  // The first parameter is target degrees
-  // The second parameter is max speed the robot will drive at
-
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(0, TURN_SPEED);
-  chassis.wait_drive();
-}
-// Combining Turn + Drive
-void drive_and_turn() {
-  chassis.set_drive_pid(24, DRIVE_SPEED, true);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-45, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(0, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(-24, DRIVE_SPEED, true);
-  chassis.wait_drive();
 }
 // Wait Until and Changing Max Speed
 void wait_until_change_speed() {
@@ -96,7 +51,6 @@ void wait_until_change_speed() {
   chassis.set_max_speed(40);  // After driving 6 inches at DRIVE_SPEED, the robot will go the remaining distance at 40 speed
   chassis.wait_drive();
 }
-// Swing Example
 void swing_example() {
   // The first parameter is ez::LEFT_SWING or ez::RIGHT_SWING
   // The second parameter is target degrees
@@ -111,7 +65,6 @@ void swing_example() {
   chassis.set_swing_pid(ez::RIGHT_SWING, 0, SWING_SPEED);
   chassis.wait_drive();
 }
-// Auto that tests everything
 void combining_movements() {
   chassis.set_drive_pid(24, DRIVE_SPEED, true);
   chassis.wait_drive();
@@ -164,61 +117,38 @@ void interfered_example() {
 }
 
 void side_2_tiles() {
-  chassis.set_drive_pid(20, 100);
+  chassis.set_drive_pid(20, drive_speed_high);
   chassis.wait_drive();
-  intake.move_voltage(120000);
-  chassis.set_drive_pid(15, 25);
+  intake_in();
+  chassis.set_drive_pid(15, drive_speed_low);
   chassis.wait_drive();
-  chassis.set_turn_pid(-45, 100);
+  chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
-  chassis.set_drive_pid(35, 25);
+  chassis.set_drive_pid(35, drive_speed_low);
   chassis.wait_drive();
-  intake.move_voltage(0);
-  flywheel.move_voltage(120000);
-  chassis.set_turn_pid(-135, 95);
+  intake_stop();
+  flywheel_high();
+  chassis.set_turn_pid(-135, drive_speed_high);
   chassis.wait_drive();
-  pros::delay(2000);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(500);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(500);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(2000);
+  triple_shoot();
+  pros::delay(1000);
   flywheel.move_voltage(0);
 }
 void side_1_tile() {
-  chassis.set_drive_pid(10, 100);
+  chassis.set_drive_pid(10, drive_speed_high);
   chassis.wait_drive();
-  intake.move_voltage(120000);
-  chassis.set_drive_pid(15, 25);
+  intake_in();
+  chassis.set_drive_pid(15, drive_speed_low);
   chassis.wait_drive();
-  chassis.set_turn_pid(-45, 100);
+  chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
-  chassis.set_drive_pid(10, 25);
+  chassis.set_drive_pid(10, drive_speed_low);
   chassis.wait_drive();
-  intake.move_voltage(12000);
-  flywheel.move_voltage(120000);
-  chassis.set_turn_pid(-135, 95);
-  chassis.set_drive_pid(20, 25);
+  intake_stop();
+  flywheel_high();
+  chassis.set_drive_pid(90, drive_speed_high);
   chassis.wait_drive();
-  pros::delay(2000);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(500);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(500);
-  indexer.set_value(true);
-  pros::delay(10);
-  indexer.set_value(false);
-  pros::delay(2000);
-  flywheel.move_voltage(0);
+  triple_shoot();
+  pros::delay(1000);
+  flywheel_stop();
 }

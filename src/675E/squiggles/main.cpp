@@ -10,7 +10,7 @@
 
 using namespace squiggles;
 
-int main() {
+/*int main() {
   auto constraints = Constraints(2.0, 2.0, 1.0);
   auto model = std::make_shared<TankModel>(0.4, constraints);
   auto spline = SplineGenerator(constraints, model, 0.1);
@@ -19,4 +19,4 @@ int main() {
     ControlVector(Pose(0, 2, 0), 0.0, 0.0),
   });
   return 0;
-}
+}*/

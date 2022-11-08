@@ -1,11 +1,5 @@
-#include "675E/helper-functions.hpp"
-
-#include <string>
-
-#include "autons.hpp"
 #include "main.h"
-#include "pros/rtos.hpp"
-
+std::string alliance;
 bool drive_lock_toggle;
 bool is_roller_at_desired_color = false;
 void intake_in() {
@@ -40,15 +34,14 @@ void drive_lock() {
     master.rumble("..");
   }
 }
-/*int detect_roller_color() {
-  std::string desired_color;
-  if (desired_color == "red") {
-  }
-  while (roller_optical.get_rgb()  {0, 0, 0, 0}){
+int detect_roller_color_function() {
+  pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
+  while (rgb_value.red != 255 || rgb_value.blue != 255) {
     intake_out();
+    is_roller_at_desired_color = 1;
   }
-    return is_roller_at_desired_color;
-}*/
+  return is_roller_at_desired_color;
+}
 int triple_shoot_function() {
   indexer_pneum.set_value(true);
   pros::delay(100);
@@ -66,13 +59,18 @@ int triple_shoot_function() {
 }
 int turn_pid_180_function() {
   double initial_angle = chassis.get_gyro();
-  chassis.set_turn_pid(180, 100);
+  if (pros::E_CONTROLLER_DIGITAL_B == 1) {
+    chassis.set_turn_pid(180, 100);
+  }
   double final_angle = chassis.get_gyro();
   return initial_angle - final_angle;
+}
+void detect_roller_color() {
+  pros::Task detect_roller_color_task(detect_roller_color_function);
 }
 void triple_shoot() {
   pros::Task triple_shooter_task(triple_shoot_function);
 }
 void turn_pid_180() {
-  pros::Task turn_pid_180_task(turn_pid_180_function);
+  pros::Task turn_pid_180_task(turn_pid_180_function, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "180 Turn");
 }

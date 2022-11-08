@@ -18,15 +18,6 @@ Drive chassis(
     // External Gear Ratio
     ,
     1.66);
-void turn_pid_180_macro() {
-  while (true) {
-    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)==1) {
-      chassis.wait_drive();
-      chassis.set_turn_pid(180, 85);
-      chassis.wait_drive();
-    }
-  }
-}
 void initialize() {
   ez::print_ez_template();
   pros::delay(500);
@@ -35,8 +26,8 @@ void initialize() {
   chassis.set_curve_default(2, 2);
   default_constants();
   ez::as::auton_selector.add_autons({
-      Auton("Auton for starting line 2 tiles away from edge of field", side_2_tiles),
-      Auton("Auton for starting line 1 tile away from edge of field", side_1_tile),
+      Auton("Auton for starting line \n 2 tiles away from edge of field", side_2_tiles),
+      Auton("Auton for starting line \n 1 tile away from edge of field", side_1_tile),
   });
   chassis.initialize();
   ez::as::initialize();
@@ -59,19 +50,6 @@ void autonomous() {
   ez::as::auton_selector.call_selected_auton();
 }
 
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
 void opcontrol() {
   // Boolean to set the triple shooter on or off
   //   0 is off (single shooter)
