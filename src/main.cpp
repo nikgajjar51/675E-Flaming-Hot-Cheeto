@@ -63,6 +63,7 @@ void opcontrol() {
     intake_control();
     flywheel_control();
     expansion_control();
+    drive_lock_control();
     // EZ-Template's function for drive code
     chassis.arcade_standard(ez::SPLIT);
     // Used for timer calculations(ez::util::DELAY_TIME = 10)

@@ -35,14 +35,14 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "okapi/api.hpp"
-#include "pros/api_legacy.h"
+// #include "okapi/api.hpp"
+// #include "pros/api_legacy.h"
+#include "675E/driver-control.hpp"
+#include "675E/helper-functions.hpp"
+#include "675E/robot-config.hpp"
 #include "EZ-Template/api.hpp"
 #include "autons.hpp"
-#include "675E/robot-config.hpp"
-#include "675E/driver-control.hpp"
-#include "675E/auton-control.hpp"
-#include "675E/helper-functions.hpp"
+extern Drive chassis;
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -52,8 +52,8 @@
  * concurrently! The okapi namespace will export all symbols inside the pros
  * namespace.
  */
-using namespace pros;
-//using namespace pros::literals;
+// using namespace pros;
+// using namespace pros::literals;
 // using namespace okapi;
 // using namespace ez;
 
@@ -79,7 +79,7 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-//#include <iostream>
+// #include <iostream>
 #endif
 
 #endif  // _PROS_MAIN_H_

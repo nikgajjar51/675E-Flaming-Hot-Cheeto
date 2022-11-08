@@ -1,6 +1,6 @@
 #pragma once
 #include "EZ-Template/drive/drive.hpp"
-extern Drive chassis;
+#include "api.h"
 void intake_in();
 void intake_out();
 void intake_stop();

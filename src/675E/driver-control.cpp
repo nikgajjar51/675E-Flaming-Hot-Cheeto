@@ -1,54 +1,24 @@
-#include <ratio>
-
 #include "main.h"
-
-// Boolean to control the triple shooter macro
-bool triple_shooter_toggle;
-
-// flywheel_control(): Controls the flywheel and indexer mechanism.
-//   When the R1 button is pressed, the fywheel spins at "high speed"
-//   When the R2 button is pressed, the fywheel spins at "low speed"
-//   When both the R1 and R2 buttons are pressed, the indexer fires to launch the disk
+#include "675E/driver-control.hpp"
+bool triple_shooter_toggle, drive_lock_toggle;
 void flywheel_control() {
-  // The if-statement for if both the R1 and R2 buttons are pressed
-  //   This needs to come first as if this is false, the rest of the functions will follow through.
-  //   If this was later on in the if-else chain, it would never fire as other conditions would be met BEFORE coming to this one
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     if (triple_shooter_toggle == 0) {
-      // Sets the indexer pneumatic to true (towards the flywheel in this case)
       indexer_pneum.set_value(true);
     } else if (triple_shooter_toggle == 1) {
-      // Macro to triple shoot the shooter
       triple_shoot();
     }
-  }
-  // This else if statement is a continuation of the previous if-else iteration and is for if the R1 button is pressed.
-  else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
-    // Sets the indexer pneumatic to false (away from the flywheel in this case)
+  } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
     indexer_pneum.set_value(false);
-    // Spins the flywheel motor at 'high speed' (12000 mV or 12 V)
     flywheel_high();
-  }
-  // This else if statement is a continuation of the previous if-else iteration and is for if the R2 button is pressed.
-  else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
-    // Sets the indexer pneumatic to false (away from the flywheel in this case)
+  } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     indexer_pneum.set_value(false);
-    // Spins the flywheel motor at 'low speed' (9000 mV or 9 V)
     flywheel_low();
-  }
-  // This else statement is a continuation of the previous if-else iteration and is for if no button is pressed.
-  else {
-    // Sets the indexer pneumatic to false (away from the flywheel in this case)
+  } else {
     indexer_pneum.set_value(false);
-    // Stops the flywheel motor
     flywheel_stop();
   }
 }
-
-// intake_control(): Controls the intake and roller mechanism
-//   When the L1 button is pressed, the intake intakes at a "high speed"
-//   When the L2 button is pressed, the intake spins in reverse at a "low speed" to un-jam and spin the roller mechanism with more torque.
-//   When both the L1 and L2 buttons are pressed, the intake spins
 void intake_control() {
   //
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
@@ -64,5 +34,19 @@ void expansion_control() {
     expansion_pneum.set_value(false);
   } else {
     expansion_pneum.set_value(true);
+  }
+}
+void drive_lock_control() {
+  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && drive_lock_toggle) {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_COAST);
+    chassis.set_active_brake(0.0);
+    master.rumble("-");
+  } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !drive_lock_toggle) {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_HOLD);
+    chassis.reset_drive_sensor();
+    chassis.set_active_brake(0.1);
+    master.rumble("..");
   }
 }

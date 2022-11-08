@@ -1,6 +1,7 @@
 #include "main.h"
+#include "pros/misc.h"
+#include "robot-config.hpp"
 std::string alliance;
-bool drive_lock_toggle;
 bool is_roller_at_desired_color = false;
 void intake_in() {
   intake.move_voltage(12000);
@@ -20,20 +21,6 @@ void flywheel_high() {
 void flywheel_stop() {
   intake.move_voltage(0);
 }
-void drive_lock() {
-  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && drive_lock_toggle) {
-    drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_COAST);
-    chassis.set_active_brake(0.0);
-    master.rumble("-");
-  } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !drive_lock_toggle) {
-    drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_HOLD);
-    chassis.reset_drive_sensor();
-    chassis.set_active_brake(0.1);
-    master.rumble("..");
-  }
-}
 int detect_roller_color_function() {
   pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
   while (rgb_value.red != 255 || rgb_value.blue != 255) {
@@ -41,6 +28,12 @@ int detect_roller_color_function() {
     is_roller_at_desired_color = 1;
   }
   return is_roller_at_desired_color;
+}
+void single_shoot_function() {
+  indexer_pneum.set_value(true);
+  pros::delay(100);
+  indexer_pneum.set_value(false);
+  pros::delay(1000);
 }
 int triple_shoot_function() {
   indexer_pneum.set_value(true);
@@ -58,12 +51,12 @@ int triple_shoot_function() {
   return 1;
 }
 int turn_pid_180_function() {
-  double initial_angle = chassis.get_gyro();
-  if (pros::E_CONTROLLER_DIGITAL_B == 1) {
-    chassis.set_turn_pid(180, 100);
+  if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B) == 1) {
+    if (pros::E_CONTROLLER_DIGITAL_B == 1) {
+      chassis.set_turn_pid(180, 100);
+    }
   }
-  double final_angle = chassis.get_gyro();
-  return initial_angle - final_angle;
+  return 1;
 }
 void detect_roller_color() {
   pros::Task detect_roller_color_task(detect_roller_color_function);
