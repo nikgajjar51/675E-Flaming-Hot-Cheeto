@@ -1,14 +1,13 @@
 #include "autons.hpp"
 
-#include "675E/helper-functions.hpp"
-#include "EZ-Template/util.hpp"
 #include "main.h"
 
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
-const int drive_speed_high = 110;
-const int drive_speed_low = 25;
+
+const double high_speed_multiplier = 4.5, low_speed_multiplier = 1;
+const int drive_speed = 25, turn_speed = 90, swing_speed = 90;
 
 // Constants
 //    It's best practice totune constants when the robot is empty and with heavier game objects, or with lifts up vs down.
@@ -119,25 +118,36 @@ void interfered_example() {
 }
 
 void side_2_tiles() {
-  chassis.set_drive_pid(18, drive_speed_high);
+  // Go forward - Approach the disk
+  chassis.set_drive_pid(18, drive_speed*high_speed_multiplier);
   chassis.wait_drive();
+  // Start the intake
   intake_in();
-  chassis.set_drive_pid(15, drive_speed_low);
+  // Go Forward - At a lower speed to start intaking without jamming
+  chassis.set_drive_pid(15, drive_speed*low_speed_multiplier);
   chassis.wait_drive();
-  chassis.set_swing_pid(ez::LEFT_SWING, -45, drive_speed_high);
-  // chassis.set_turn_pid(-45, drive_speed_high);
+  // Turn - Towards the other 2 disks
+  chassis.set_swing_pid(ez::LEFT_SWING, -45, drive_speed*high_speed_multiplier);
+        //chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
-  chassis.set_drive_pid(35, drive_speed_low);
-  chassis.wait_drive();
-  intake_stop();
+  // Start the flywheel - Allow it to reach high speed in time
   flywheel_high();
-  chassis.set_turn_pid(-135, drive_speed_high);
+  // Go Forward - At a lower speed to continue intaking without jamming
+  chassis.set_drive_pid(35, drive_speed*low_speed_multiplier);
   chassis.wait_drive();
-  chassis.set_drive_pid(5, drive_speed_low);
+  // Stop the intake
+  intake_stop();
+  // Turn - Towards the goal
+  chassis.set_turn_pid(-135, drive_speed*high_speed_multiplier);
   chassis.wait_drive();
-  pros::delay(1000);
+  // Go Forward - Slowly to approach the white line (This number needs to be tuned)
+  chassis.set_drive_pid(5, drive_speed*low_speed_multiplier);
+  chassis.wait_drive();
+  // Shoot the 3 disks
   triple_shoot_function();
-  pros::delay(triple_shoot_function());
+  // Wait - Make the disks are shot before stopping the flywheel
+  pros::delay(triple_shoot_function()+500);
+  // Stop the flywheel
   flywheel_stop();
 }
 void side_1_tile() {
