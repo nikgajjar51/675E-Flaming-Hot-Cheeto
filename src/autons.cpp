@@ -1,5 +1,7 @@
 #include "autons.hpp"
 
+#include "675E/helper-functions.hpp"
+#include "EZ-Template/util.hpp"
 #include "main.h"
 
 const int DRIVE_SPEED = 110;
@@ -117,12 +119,13 @@ void interfered_example() {
 }
 
 void side_2_tiles() {
-  chassis.set_drive_pid(20, drive_speed_high);
+  chassis.set_drive_pid(18, drive_speed_high);
   chassis.wait_drive();
   intake_in();
   chassis.set_drive_pid(15, drive_speed_low);
   chassis.wait_drive();
-  chassis.set_turn_pid(-45, drive_speed_high);
+  chassis.set_swing_pid(ez::LEFT_SWING, -45, drive_speed_high);
+  // chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
   chassis.set_drive_pid(35, drive_speed_low);
   chassis.wait_drive();
@@ -130,25 +133,12 @@ void side_2_tiles() {
   flywheel_high();
   chassis.set_turn_pid(-135, drive_speed_high);
   chassis.wait_drive();
-  triple_shoot();
+  chassis.set_drive_pid(5, drive_speed_low);
+  chassis.wait_drive();
   pros::delay(1000);
-  flywheel.move_voltage(0);
+  triple_shoot_function();
+  pros::delay(triple_shoot_function());
+  flywheel_stop();
 }
 void side_1_tile() {
-  chassis.set_drive_pid(10, drive_speed_high);
-  chassis.wait_drive();
-  intake_in();
-  chassis.set_drive_pid(15, drive_speed_low);
-  chassis.wait_drive();
-  chassis.set_turn_pid(-45, drive_speed_high);
-  chassis.wait_drive();
-  chassis.set_drive_pid(10, drive_speed_low);
-  chassis.wait_drive();
-  intake_stop();
-  flywheel_high();
-  chassis.set_drive_pid(90, drive_speed_high);
-  chassis.wait_drive();
-  triple_shoot();
-  pros::delay(1000);
-  flywheel_stop();
 }

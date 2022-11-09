@@ -42,7 +42,6 @@
 #include "675E/robot-config.hpp"
 #include "EZ-Template/api.hpp"
 #include "autons.hpp"
-extern Drive chassis;
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

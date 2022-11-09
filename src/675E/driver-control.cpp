@@ -1,6 +1,5 @@
 #include "main.h"
-#include "675E/driver-control.hpp"
-bool triple_shooter_toggle, drive_lock_toggle;
+bool triple_shooter_toggle;
 void flywheel_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     if (triple_shooter_toggle == 0) {
@@ -14,7 +13,7 @@ void flywheel_control() {
   } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     indexer_pneum.set_value(false);
     flywheel_low();
-  } else {
+  } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 0&& master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 0) {
     indexer_pneum.set_value(false);
     flywheel_stop();
   }
@@ -34,19 +33,5 @@ void expansion_control() {
     expansion_pneum.set_value(false);
   } else {
     expansion_pneum.set_value(true);
-  }
-}
-void drive_lock_control() {
-  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && drive_lock_toggle) {
-    drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_COAST);
-    chassis.set_active_brake(0.0);
-    master.rumble("-");
-  } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !drive_lock_toggle) {
-    drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_HOLD);
-    chassis.reset_drive_sensor();
-    chassis.set_active_brake(0.1);
-    master.rumble("..");
   }
 }

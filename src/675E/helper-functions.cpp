@@ -1,6 +1,6 @@
+#include "helper-functions.hpp"
 #include "main.h"
-#include "pros/misc.h"
-#include "robot-config.hpp"
+#include "pros/rtos.hpp"
 std::string alliance;
 bool is_roller_at_desired_color = false;
 void intake_in() {
@@ -29,26 +29,24 @@ int detect_roller_color_function() {
   }
   return is_roller_at_desired_color;
 }
-void single_shoot_function() {
+int single_shoot_function() {
+  int single_shoot_timer = 0;
   indexer_pneum.set_value(true);
-  pros::delay(100);
+  pros::delay(single_shoot_timer + 500);
   indexer_pneum.set_value(false);
-  pros::delay(1000);
+  pros::delay(single_shoot_timer + 1500);
+  return single_shoot_timer;
 }
 int triple_shoot_function() {
-  indexer_pneum.set_value(true);
-  pros::delay(100);
-  indexer_pneum.set_value(false);
-  pros::delay(1000);
-  indexer_pneum.set_value(true);
-  pros::delay(100);
-  indexer_pneum.set_value(false);
-  pros::delay(1000);
-  indexer_pneum.set_value(true);
-  pros::delay(100);
-  indexer_pneum.set_value(false);
-  pros::delay(1000);
-  return 1;
+  int counter, triple_shoot_timer = 0;
+  for (int i; i <= 3; i++) {
+    indexer_pneum.set_value(true);
+    pros::delay(triple_shoot_timer + 500);
+    indexer_pneum.set_value(false);
+    pros::delay(triple_shoot_timer + 1500);
+    counter++;
+  }
+  return triple_shoot_timer;
 }
 int turn_pid_180_function() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B) == 1) {
@@ -62,7 +60,10 @@ void detect_roller_color() {
   pros::Task detect_roller_color_task(detect_roller_color_function);
 }
 void triple_shoot() {
-  pros::Task triple_shooter_task(triple_shoot_function);
+  pros::Task triple_shoot_task(triple_shoot_function);
+}
+void single_shoot() {
+  pros::Task single_shoot_task(single_shoot_function);
 }
 void turn_pid_180() {
   pros::Task turn_pid_180_task(turn_pid_180_function, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "180 Turn");

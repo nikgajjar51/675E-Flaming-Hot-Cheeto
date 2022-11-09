@@ -1,4 +1,5 @@
 #include "main.h"
+bool drive_lock_toggle;
 // Chassis constructor
 Drive chassis(
     // Left Chassis Ports (negative port will reverse it)
@@ -26,8 +27,8 @@ void initialize() {
   chassis.set_curve_default(2, 2);
   default_constants();
   ez::as::auton_selector.add_autons({
-      Auton("Auton for starting line \n 2 tiles away from edge of field", side_2_tiles),
-      Auton("Auton for starting line \n 1 tile away from edge of field", side_1_tile),
+      Auton("Right Side", side_2_tiles),
+      Auton("Left Side", side_1_tile),
   });
   chassis.initialize();
   ez::as::initialize();
@@ -49,12 +50,31 @@ void autonomous() {
   // Calls selected auton from autonomous selector.
   ez::as::auton_selector.call_selected_auton();
 }
+void toggle_drive_lock() {
+  if (drive_lock_toggle) {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(MOTOR_BRAKE_COAST);
+    chassis.set_active_brake(0.0);
+    master.rumble("-");
+  } else {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(MOTOR_BRAKE_HOLD);
+    chassis.reset_drive_sensor();
+    chassis.set_active_brake(0.1);
+    master.rumble("..");
+  }
+}
 
+void drive_lock_control() {
+  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+    toggle_drive_lock();
+  }
+}
 void opcontrol() {
   // Boolean to set the triple shooter on or off
   //   0 is off (single shooter)
   //   1 is on (triple shooter)
-  triple_shooter = 0;
+  triple_shooter_toggle = 0;
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
   flywheel.set_brake_mode(MOTOR_BRAKE_COAST);
