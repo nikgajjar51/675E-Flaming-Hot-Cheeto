@@ -34,8 +34,3 @@ void expansion_control() {
     expansion_pneum.set_value(false);
   }
 }
-void heat_control(){
-  if(intake.get_temperature()){
-
-  }
-}
