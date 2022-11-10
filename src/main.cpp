@@ -27,8 +27,8 @@ void initialize() {
   chassis.set_curve_default(2, 2);
   default_constants();
   ez::as::auton_selector.add_autons({
-      Auton("Right Side", side_2_tiles),
-      Auton("Left Side", side_1_tile),
+      Auton("Right Side Auton", right_side_auton),
+      Auton("Left Side Auton", left_side_auton),
   });
   chassis.initialize();
   ez::as::initialize();

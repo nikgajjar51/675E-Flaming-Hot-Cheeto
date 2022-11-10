@@ -2,6 +2,7 @@
 
 #include "675E/helper-functions.hpp"
 #include "main.h"
+#include "pros/rtos.hpp"
 
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
@@ -118,7 +119,7 @@ void interfered_example() {
   chassis.wait_drive();
 }
 
-void side_2_tiles() {
+void right_side_auton() {
   // Go forward - Approach the disk
   chassis.set_drive_pid(18, drive_speed*high_speed_multiplier);
   chassis.wait_drive();
@@ -151,6 +152,8 @@ void side_2_tiles() {
   // Stop the flywheel
   flywheel_stop();
 }
-void side_1_tile() {
+void left_side_auton() {
   intake_out();
+  pros::delay(500);
+  intake_stop();
 }

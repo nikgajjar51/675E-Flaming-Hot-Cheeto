@@ -39,8 +39,8 @@ int triple_shoot_function() {
   return triple_shoot_timer;
 }
 void triple_shoot() {
-  //pros::Task triple_shoot_task(triple_shoot_function);
+  pros::Task triple_shoot_task(triple_shoot_function);
 }
 void single_shoot() {
-  //pros::Task single_shoot_task(single_shoot_function);
+  pros::Task single_shoot_task(single_shoot_function);
 }
