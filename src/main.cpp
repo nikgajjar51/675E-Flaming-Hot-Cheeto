@@ -77,7 +77,7 @@ void opcontrol() {
   triple_shooter_toggle = 0;
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  flywheel.set_brake_mode(MOTOR_BRAKE_COAST);
+  flywheel.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
   intake.set_brake_mode(MOTOR_BRAKE_COAST);
   while (true) {
     intake_control();

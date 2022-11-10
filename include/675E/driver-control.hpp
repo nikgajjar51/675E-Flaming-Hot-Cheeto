@@ -5,4 +5,3 @@ extern bool triple_shooter_toggle;
 void flywheel_control(void);
 void intake_control(void);
 void expansion_control(void);
-void drive_lock_control(void);

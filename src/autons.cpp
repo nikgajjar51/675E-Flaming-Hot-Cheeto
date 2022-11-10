@@ -1,5 +1,6 @@
 #include "autons.hpp"
 
+#include "675E/helper-functions.hpp"
 #include "main.h"
 
 const int DRIVE_SPEED = 110;
@@ -128,12 +129,12 @@ void side_2_tiles() {
   chassis.wait_drive();
   // Turn - Towards the other 2 disks
   chassis.set_swing_pid(ez::LEFT_SWING, -45, drive_speed*high_speed_multiplier);
-        //chassis.set_turn_pid(-45, drive_speed_high);
+  // chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
   // Start the flywheel - Allow it to reach high speed in time
   flywheel_high();
   // Go Forward - At a lower speed to continue intaking without jamming
-  chassis.set_drive_pid(35, drive_speed*low_speed_multiplier);
+  chassis.set_drive_pid(33, drive_speed*low_speed_multiplier);
   chassis.wait_drive();
   // Stop the intake
   intake_stop();
@@ -141,7 +142,7 @@ void side_2_tiles() {
   chassis.set_turn_pid(-135, drive_speed*high_speed_multiplier);
   chassis.wait_drive();
   // Go Forward - Slowly to approach the white line (This number needs to be tuned)
-  chassis.set_drive_pid(5, drive_speed*low_speed_multiplier);
+  chassis.set_drive_pid(-5, drive_speed*low_speed_multiplier);
   chassis.wait_drive();
   // Shoot the 3 disks
   triple_shoot_function();
@@ -151,4 +152,5 @@ void side_2_tiles() {
   flywheel_stop();
 }
 void side_1_tile() {
+  intake_out();
 }
