@@ -1,5 +1,5 @@
 #include "main.h"
-bool triple_shooter_toggle;
+bool triple_shooter_toggle, drive_lock_toggle;
 void flywheel_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     if (triple_shooter_toggle == 0) {
@@ -32,5 +32,25 @@ void expansion_control() {
     expansion_pneum.set_value(true);
   } else {
     expansion_pneum.set_value(false);
+  }
+}
+void toggle_drive_lock() {
+  if (drive_lock_toggle) {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(MOTOR_BRAKE_COAST);
+    chassis.set_active_brake(0.0);
+    master.rumble("-");
+  } else {
+    drive_lock_toggle = !drive_lock_toggle;
+    chassis.set_drive_brake(MOTOR_BRAKE_HOLD);
+    chassis.reset_drive_sensor();
+    chassis.set_active_brake(0.1);
+    master.rumble("..");
+  }
+}
+
+void drive_lock_control() {
+  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+    toggle_drive_lock();
   }
 }
