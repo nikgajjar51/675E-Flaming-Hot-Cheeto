@@ -1,6 +1,4 @@
-#include "helper-functions.hpp"
 #include "main.h"
-#include "pros/rtos.hpp"
 void intake_in() {
   intake.move_voltage(12000);
 }

@@ -1,3 +1,4 @@
+#include "autons.hpp"
 #include "main.h"
 bool triple_shooter_toggle, drive_lock_toggle;
 void flywheel_control() {
@@ -37,12 +38,12 @@ void expansion_control() {
 void toggle_drive_lock() {
   if (drive_lock_toggle) {
     drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(MOTOR_BRAKE_COAST);
+    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_COAST);
     chassis.set_active_brake(0.0);
     master.rumble("-");
   } else {
     drive_lock_toggle = !drive_lock_toggle;
-    chassis.set_drive_brake(MOTOR_BRAKE_HOLD);
+    chassis.set_drive_brake(pros::E_MOTOR_BRAKE_HOLD);
     chassis.reset_drive_sensor();
     chassis.set_active_brake(0.1);
     master.rumble("..");

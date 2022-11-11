@@ -5,9 +5,9 @@
 # Executables
 *.bin
 *.elf
+.cache/
 
 # PROS
-.cache/
 bin/
 .vscode/
 compile_commands.json
