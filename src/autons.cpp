@@ -2,8 +2,9 @@
 #include "675E/helper-functions.hpp"
 #include "main.h"
 #include "pros/rtos.h"
-const double high_speed_multiplier = 4.5, low_speed_multiplier = 1;
-const int drive_speed = 25, turn_speed = 90, swing_speed = 90;
+const double high_speed_multiplier = 4, normal_speed_multiplier = 2,
+             low_speed_multiplier = 1;
+const int drive_speed = 25, turn_speed = 25, swing_speed = 25;
 void default_constants() {
   chassis.set_slew_min_power(80, 80);
   chassis.set_slew_distance(7, 7);
@@ -121,8 +122,8 @@ void right_side_1() {
   chassis.wait_drive();
   // Start the intake
   intake_in();
-  // Go Forward - At a lower speed to start intaking without jamming
-  chassis.set_drive_pid(15, drive_speed * low_speed_multiplier);
+  // Go Forward - To start intaking
+  chassis.set_drive_pid(15, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
   // Turn - Towards the other 2 disks
   chassis.set_swing_pid(ez::LEFT_SWING, -45,
@@ -153,33 +154,44 @@ void right_side_1() {
 // Right Side Auton: Rollers and 5 disks high goal
 void right_side_2() {
   // Start the flywheel - Allow it to reach high speed in time
-  flywheel_ultra_high();
+  flywheel_high();
   // Go Backwards - Move to position to shoot disks
-  chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
+  chassis.set_drive_pid(-20, drive_speed * low_speed_multiplier);
   chassis.wait_drive();
   // Turn - Aim towards the high goal
   chassis.set_turn_pid(25, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
   // Shoot the 2 disks
+  pros::c::delay(1000);
   pros::delay(double_shoot_function());
   // Swing - Away from the roller to face the roller mech with the roller
-  chassis.set_swing_pid(ez::LEFT_SWING, -70,
+  chassis.set_swing_pid(ez::LEFT_SWING, -75,
                         turn_speed * high_speed_multiplier);
   chassis.wait_drive();
   // Go Forward - Move towards the roller
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  // Swing - To the 0 postion of the IMU to be in linw with the roller
+  // Swing - To the 0 postion of the IMU to be in line with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, 0, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
+  intake_in();
   // Move Forwards - Towards the roller to spin it
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
+  pros::c::delay(500);
   chassis.wait_drive();
-  
+  pros::c::delay(500);
+  intake_stop();
+  chassis.set_drive_pid(-2, drive_speed * high_speed_multiplier);
+  chassis.wait_drive();
+  chassis.set_turn_pid(135, turn_speed * high_speed_multiplier);
+  chassis.wait_drive();
+  intake_in();
+  chassis.set_drive_pid(100, drive_speed * high_speed_multiplier);
+  chassis.wait_drive();
 }
 // Right Side Auton: Roller only
 void right_side_3() {
-  // 
+  //
   chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
   chassis.set_swing_pid(ez::LEFT_SWING, -70,
