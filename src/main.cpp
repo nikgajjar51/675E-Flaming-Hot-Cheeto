@@ -52,16 +52,18 @@ void initialize() {
   exit_condition_defaults();
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-      Auton("Right Side Auton \n\n Simpler auton: 3 Disks", right_side_1),
-      Auton("Right Side Auton \n\n Rollers and 5 disks", right_side_2),
-      Auton("Right Side Auton \n\n Rollers only", right_side_3),
-      Auton("Right Side Auton \n\n Rollers and preloads", right_side_4),
-      Auton("Left Side Auton \n\n Rollers only", left_side_1),
-      Auton("Left Side Auton \n\n Rollers and 5 disks", left_side_2),
+      Auton("Right Side Auton \n\n 3 Disks", right_side_1),
+      Auton("Right Side Auton \n\n Roller and 5 disks", right_side_2),
+      Auton("Right Side Auton \n\n Roller only", right_side_3),
+      Auton("Right Side Auton \n\n Roller and preloads", right_side_4),
+      Auton("Left Side Auton \n\n Roller only", left_side_1),
+      Auton("Left Side Auton \n\n Roller and 5 disks", left_side_2),
 
   });
   chassis.initialize();
   ez::as::initialize();
+  chassis.toggle_auto_print(1);
+  void alliance_selector_function();
 }
 
 /**

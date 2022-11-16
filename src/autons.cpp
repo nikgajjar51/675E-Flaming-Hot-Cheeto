@@ -18,13 +18,11 @@ void exit_condition_defaults() {
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
-
 void modified_exit_condition() {
   chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
-
 void wait_until_change_speed() {
   // wait_until will wait until the robot gets to a desired position
 
@@ -102,7 +100,6 @@ void tug(int attempts) {
     }
   }
 }
-
 // If there is no interference, robot will drive forward and turn 90 degrees.
 // If interfered, robot will drive forward and then attempt to drive backwards.
 void interfered_example() {
@@ -117,7 +114,7 @@ void interfered_example() {
   chassis.set_turn_pid(90, turn_speed);
   chassis.wait_drive();
 }
-
+// Right Side Auton: 3 disks high goal
 void right_side_1() {
   // Go forward - Approach the disk
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
@@ -153,25 +150,36 @@ void right_side_1() {
   // Stop the flywheel
   flywheel_stop();
 }
+// Right Side Auton: Rollers and 5 disks high goal
 void right_side_2() {
+  // Start the flywheel - Allow it to reach high speed in time
   flywheel_ultra_high();
+  // Go Backwards - Move to position to shoot disks
   chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Turn - Aim towards the high goal
   chassis.set_turn_pid(25, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Shoot the 2 disks
   pros::delay(double_shoot_function());
+  // Swing - Away from the roller to face the roller mech with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, -70,
                         turn_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Go Forward - Move towards the roller
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  intake_in();
+  // Swing - To the 0 postion of the IMU to be in linw with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, 0, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Move Forwards - Towards the roller to spin it
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  
 }
+// Right Side Auton: Roller only
 void right_side_3() {
+  // 
   chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
   chassis.set_swing_pid(ez::LEFT_SWING, -70,
@@ -185,6 +193,7 @@ void right_side_3() {
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
 }
+// Right Side Auton: 2 Preloads and roller
 void right_side_4() {
   flywheel_ultra_high();
   chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
@@ -203,9 +212,11 @@ void right_side_4() {
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
 }
+// Left Side Auton: Roller only
 void left_side_1() {
   intake_out_fast();
   pros::delay(500);
   intake_stop();
 }
+// Left Side Auton: Roller and 5 disks high goals
 void left_side_2() {}
