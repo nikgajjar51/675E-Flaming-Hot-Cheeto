@@ -1,10 +1,8 @@
-#include "autons.hpp"
-#include "675E/helper-functions.hpp"
+#include "675E/autons.hpp"
 #include "main.h"
-#include "pros/rtos.h"
 const double high_speed_multiplier = 4, normal_speed_multiplier = 2,
              low_speed_multiplier = 1;
-const int drive_speed = 25, turn_speed = 25, swing_speed = 25;
+const int drive_speed = 25, turn_speed = 15, swing_speed = 15;
 void default_constants() {
   chassis.set_slew_min_power(80, 80);
   chassis.set_slew_distance(7, 7);
@@ -117,11 +115,13 @@ void interfered_example() {
 }
 // Right Side Auton: 3 disks high goal
 void right_side_1() {
+  // Start the flywheel - Allow it to reach high speed in time
+  flywheel_idle();
   // Go forward - Approach the disk
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
   // Start the intake
-  intake_in();
+  intake_in_fast();
   // Go Forward - To start intaking
   chassis.set_drive_pid(15, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
@@ -130,22 +130,18 @@ void right_side_1() {
                         drive_speed * high_speed_multiplier);
   // chassis.set_turn_pid(-45, drive_speed_high);
   chassis.wait_drive();
-  // Start the flywheel - Allow it to reach high speed in time
-  flywheel_low();
   // Go Forward - At a lower speed to continue intaking without jamming
-  chassis.set_drive_pid(33, drive_speed * low_speed_multiplier);
+  chassis.set_drive_pid(33, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  // Stop the intake
-  intake_stop();
   // Turn - Towards the goal
   chassis.set_turn_pid(-135, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  // Go Forward - Slowly to approach the white line (This number needs to be
-  // tuned)
-  chassis.set_drive_pid(-5, drive_speed * low_speed_multiplier);
+  // Go Forward - approach the low goal
+  chassis.set_drive_pid(-7, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Stop the intake
+  intake_stop();
   // Shoot the 3 disks
-  triple_shoot_function();
   // Wait - Make the disks are shot before stopping the flywheel
   pros::delay(triple_shoot_function() + 500);
   // Stop the flywheel
@@ -167,6 +163,7 @@ void right_side_2() {
   // Swing - Away from the roller to face the roller mech with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, -75,
                         turn_speed * high_speed_multiplier);
+  flywheel_idle();
   chassis.wait_drive();
   // Go Forward - Move towards the roller
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
@@ -174,24 +171,32 @@ void right_side_2() {
   // Swing - To the 0 postion of the IMU to be in line with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, 0, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
-  intake_in();
+  intake_in_fast();
   // Move Forwards - Towards the roller to spin it
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
-  pros::c::delay(500);
   chassis.wait_drive();
+  // Wait for the robot to move the roller (TODO: Replace with color detect
+  // function);
   pros::c::delay(500);
+  // Stop the intake
   intake_stop();
+  // Go Backwards - Move away from the roller
   chassis.set_drive_pid(-2, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  // Turn around - face the intake to the disks
   chassis.set_turn_pid(135, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
-  intake_in();
+  // Re-Start the intake
+  intake_in_fast();
+  // Start the flywheel
+  flywheel_high();
+  // Move to collect the 3 disks
   chassis.set_drive_pid(100, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  //flywheel_stop();
 }
 // Right Side Auton: Roller only
 void right_side_3() {
-  //
   chassis.set_drive_pid(-12, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
   chassis.set_swing_pid(ez::LEFT_SWING, -70,
@@ -199,11 +204,11 @@ void right_side_3() {
   chassis.wait_drive();
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  intake_in();
   chassis.set_swing_pid(ez::LEFT_SWING, 0, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
-  chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
+  chassis.set_drive_pid(15, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
+  spin_to_red();
 }
 // Right Side Auton: 2 Preloads and roller
 void right_side_4() {
@@ -218,7 +223,7 @@ void right_side_4() {
   chassis.wait_drive();
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  intake_in();
+  intake_in_fast();
   chassis.set_swing_pid(ez::LEFT_SWING, 0, turn_speed * high_speed_multiplier);
   chassis.wait_drive();
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);

@@ -42,7 +42,7 @@
 //#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 #include "EZ-Template/api.hpp"
-#include "autons.hpp"
+#include "675E/autons.hpp"
 #include "675E/driver-control.hpp"
 #include "675E/robot-config.hpp"
 #include "675E/helper-functions.hpp"

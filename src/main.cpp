@@ -1,6 +1,4 @@
 #include "main.h"
-#include "autons.hpp"
-
 // Chassis constructor
 Drive chassis(
     // Left Chassis Ports (negative port will reverse it!)
@@ -41,19 +39,18 @@ Drive chassis(
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  // Print our branding over your terminal :D
   ez::print_ez_template();
 
   pros::delay(500);
   chassis.toggle_modify_curve_with_controller(false);
   chassis.set_active_brake(0.1);
-  chassis.set_curve_default(2, 2);
+  chassis.set_curve_default(0, 0);
   default_constants();
   exit_condition_defaults();
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-     // Auton("Right Side Auton \n\n 3 Disks", right_side_1),
-      Auton("Right Side Auton \n\n Roller and 5 disks", right_side_2),
+      //Auton("Right Side Auton \n\n 3 Disks", right_side_1),
+      //Auton("Right Side Auton \n\n Roller and 5 disks", right_side_2),
       Auton("Right Side Auton \n\n Roller only", right_side_3),
       Auton("Right Side Auton \n\n Roller and preloads", right_side_4),
       Auton("Left Side Auton \n\n Roller only", left_side_1),
@@ -63,7 +60,7 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
   chassis.toggle_auto_print(1);
-  void alliance_selector_function();
+  alliance_selector_function();
 }
 
 /**
@@ -104,6 +101,9 @@ void autonomous() {
   chassis.reset_gyro();         // Reset gyro position to 0
   chassis.reset_drive_sensor(); // Reset drive sensors to 0
   chassis.set_drive_brake(MOTOR_BRAKE_HOLD);
+  
+  // Start spining the flywheel so time is not wasted in autonomous
+  //flywheel_idle();
 
   ez::as::auton_selector.call_selected_auton();
 }
@@ -126,11 +126,10 @@ void opcontrol() {
   flywheel.set_brake_mode(MOTOR_BRAKE_COAST);
   intake.set_brake_mode(MOTOR_BRAKE_COAST);
   while (true) {
-
     chassis.arcade_standard(ez::SPLIT);
-    intake_control();
-    flywheel_control();
-    expansion_control();
+    intake_manual_control();
+    flywheel_manual_control();
+    expansion_manual_control();
     drive_lock_control();
     pros::delay(ez::util::DELAY_TIME);
     // Keep this ez::util::DELAY_TIME

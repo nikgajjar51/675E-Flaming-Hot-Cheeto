@@ -1,8 +1,13 @@
-#include "helper-functions.hpp"
 #include "main.h"
-#include "pros/rtos.hpp"
-#include <string>
 bool alliance_selector_toggle = 0, alliance_color;
+// Intake needs to be jammed for this long before it tries to unjam (ms)
+const int intake_jammed_for = 100;
+// When the conveyor jams, conveyor will run backwards for this amount of time
+// (ms)
+const int intake_reverse_for = 100;
+// After getting jammed, the code cannot get stuck again for this amount of time
+// (ms)
+const int intake_was_jammed = 250;
 std::string alliance_color_string;
 pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
 // Alliance Selector - Push a button to set the alliance color for rollers in
@@ -25,22 +30,29 @@ void alliance_selector_function() {
   }
 }
 // Intake In - Fast speed for intaking and rollers.
-void intake_in() { intake.move_voltage(12000); }
+void intake_in_fast() { intake.move_velocity(600); }
+// Intake In (Slow Speed) - More torque for more precise roller control
+void intake_in_slow() { intake.move_velocity(300); }
 // Intake Out (Slow Speed) - More torque for more precise roller control
-void intake_out_slow() { intake.move_voltage(-6000); }
+void intake_out_slow() { intake.move_velocity(-300); }
 // Intake Out (Fast Speed) -  For unjamming the intake and rollers in the other
 //                            direction
-void intake_out_fast() { intake.move_voltage(-12000); }
+void intake_out_fast() { intake.move_velocity(-600); }
 // Intake Stop - Stop the intake (using velocity because?)
 void intake_stop() { intake.move_velocity(0); }
+// Intake (Get Velocity) - Constructor to get the velocity of the intake
+int intake_get_velocity() { return intake.get_actual_velocity(); };
+// Flywheel Idle - Intermediate speed that the flywheel will run at when not
+//                 shooting (Good for revving up for larger shots)
+void flywheel_idle() { flywheel.move_velocity(300); }
 // Flywheel (Low Speed) - Lower speed for closer shots(Set by benny :D )
-void flywheel_low() { flywheel.move_voltage(10000); }
+void flywheel_low() { flywheel.move_velocity(480); }
 // Flywheel (High Speed) - Higher speed for more distant shots or for jiggling
 //                         basket around to shift disks (Set by benny :D )
-void flywheel_high() { flywheel.move_voltage(11000); }
+void flywheel_high() { flywheel.move_velocity(540); }
 // Flywheel (Ultra High Speed) - The ultra nightmare setting in case we come up
 //                               against 4082B and need to just go full ham
-void flywheel_ultra_high() { flywheel.move_voltage(12000); }
+void flywheel_ultra_high() { flywheel.move_velocity(600); }
 // Flywheel Stop - Stop the flywheel (using velocity because?)
 void flywheel_stop() { flywheel.move_velocity(0); }
 // Single Shoot Function - Shoot a single disk
@@ -85,24 +97,26 @@ int triple_shoot_function() {
 // Spin to Red Function - Spin the roller to the red side using optical
 int spin_to_red_function() {
   // Set the threshold for detecting red
-  int red_threshold;
+  int red_threshold = 200;
   // While the sensor detects less then desired amount of red in the roller
   while (rgb_value.red <= red_threshold) {
     // Spin the intake
-    intake_in();
+    intake_in_fast();
   }
+  intake_stop();
   // Return the red value for debugging purposes
   return rgb_value.red;
 }
 // Spin to Blue Function - Spin the roller to the blue side using optical
 int spin_to_blue_function() {
   // Set the threshold for detecting blue
-  int blue_threshold;
+  int blue_threshold = 200;
   // While the sensor detects less then desired amount of blue in the roller
   while (rgb_value.blue <= blue_threshold) {
     // Spin the intake
-    intake_in();
+    intake_in_fast();
   }
+  intake_stop();
   // Return the blue value for debugging purposes
   return rgb_value.blue;
 }

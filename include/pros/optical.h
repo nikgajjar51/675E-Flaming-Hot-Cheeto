@@ -18,10 +18,11 @@
 
 #ifndef _PROS_OPTICAL_H_
 #define _PROS_OPTICAL_H_
+#define PROS_ERR (INT32_MAX)
+#define PROS_ERR_F (INFINITY)
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "api.h"
 
 #define OPT_GESTURE_ERR (INT8_MAX)
 #define OPT_COUNT_ERR (INT16_MAX)

@@ -1,15 +1,15 @@
 #pragma once
-#include "EZ-Template/drive/drive.hpp"
 #include "api.h"
-#include "helper-functions.hpp"
 extern bool alliance_selector_toggle, alliance_color;
 extern std::string alliance_color_string;
 void alliance_selector_function();
-void intake_in();
+void intake_in_fast();
+void intake_in_slow();
 void intake_out_slow();
 void intake_out_fast();
 void intake_stop();
 void flywheel_low();
+void flywheel_idle();
 void flywheel_high();
 void flywheel_ultra_high();
 void flywheel_stop();

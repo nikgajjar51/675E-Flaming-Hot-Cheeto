@@ -1,7 +1,6 @@
-#include "helper-functions.hpp"
 #include "main.h"
 bool triple_shooter_toggle, drive_lock_toggle;
-void flywheel_control() {
+void flywheel_manual_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 &&
       master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     indexer_pneum.set_value(true);
@@ -16,16 +15,17 @@ void flywheel_control() {
     flywheel_stop();
   }
 }
-void intake_control() {
+void intake_manual_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
-    intake_in();
+    intake_in_fast();
   } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
     intake_out_fast();
   } else {
     intake_stop();
+    flywheel_idle();
   }
 }
-void expansion_control() {
+void expansion_manual_control() {
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT) == 1 &&
       master.get_digital(pros::E_CONTROLLER_DIGITAL_A) == 1 &&
       master.get_digital(pros::E_CONTROLLER_DIGITAL_UP) == 1 &&
@@ -47,7 +47,7 @@ int toggle_drive_lock() {
     chassis.set_drive_brake(pros::E_MOTOR_BRAKE_HOLD);
     chassis.reset_drive_sensor();
     chassis.set_active_brake(0.1);
-    master.rumble("..");
+    master.rumble(". .");
     return drive_lock_toggle;
   }
 }
