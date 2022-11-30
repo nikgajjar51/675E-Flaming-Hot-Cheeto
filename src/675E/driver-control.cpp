@@ -1,3 +1,4 @@
+#include "helper-functions.hpp"
 #include "main.h"
 bool triple_shooter_toggle, drive_lock_toggle;
 void flywheel_manual_control() {
@@ -12,7 +13,7 @@ void flywheel_manual_control() {
     flywheel_low();
   } else {
     indexer_pneum.set_value(false);
-    flywheel_stop();
+    flywheel_idle();
   }
 }
 void intake_manual_control() {
@@ -22,7 +23,6 @@ void intake_manual_control() {
     intake_out_fast();
   } else {
     intake_stop();
-    flywheel_idle();
   }
 }
 void expansion_manual_control() {

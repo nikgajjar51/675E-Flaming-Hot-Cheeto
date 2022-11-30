@@ -1,3 +1,30 @@
+/* POV Benny is dum dum and cant read code
+ * V5 Smart Devices:
+ * Inertial: 11
+ * Optical: 1
+ * Radio/Controller: Any
+ *
+ * V5 Smart Motors:
+ * Drive Left Front:15
+ * Drive Left Middle: 14
+ * Drive Left Back:13
+ * Drive Right Front:20
+ * Drive Right Middle: 19
+ * Drive Right Back:18
+ * Intake: 6
+ * Flywheel: 2
+ *
+ * V5 3 Wire Devices:
+ * A: Line Sensor (Intake Bottom)
+ * B: Line Sensor (Intake Top)
+ * C: Line Sensor (Hopper Bottom)
+ * D: Button (Alliance Selector)
+ * E: Ultrasonic (Hopper, Output)
+ * F: Ultrasonic (Hopper, Input)
+ * G: Pneumatic (Expansion)
+ * H: Pneumatic (Indexer)
+ */
+
 #include "main.h"
 // Motors
 pros::Motor intake(6, pros::E_MOTOR_GEARSET_06, false,
@@ -13,9 +40,13 @@ pros::ADILineSensor hopper_sensor_bottom('C');
 // Ultrasonic
 pros::ADIUltrasonic hopper_sensor('E', 'F');
 // Buttons / Switches
-pros::ADIDigitalIn alliance_selector_button('F');
+pros::ADIDigitalIn alliance_selector_button('D');
 // Pnuematics
+
+// Double Acting
 pros::ADIDigitalOut expansion_pneum('G', false);
+
+// Single Acting
 pros::ADIDigitalOut indexer_pneum('H', false);
 
 // Vision

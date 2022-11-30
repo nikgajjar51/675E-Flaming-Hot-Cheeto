@@ -175,8 +175,7 @@ void right_side_2() {
   // Move Forwards - Towards the roller to spin it
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  // Wait for the robot to move the roller (TODO: Replace with color detect
-  // function);
+  // Wait for the robot to move the roller (TODO: Replace with color detect)
   pros::c::delay(500);
   // Stop the intake
   intake_stop();
@@ -193,7 +192,7 @@ void right_side_2() {
   // Move to collect the 3 disks
   chassis.set_drive_pid(100, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
-  //flywheel_stop();
+  // flywheel_stop();
 }
 // Right Side Auton: Roller only
 void right_side_3() {

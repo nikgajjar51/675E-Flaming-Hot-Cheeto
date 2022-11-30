@@ -1,15 +1,14 @@
 #include "main.h"
-bool alliance_selector_toggle = 0, alliance_color;
-// Intake needs to be jammed for this long before it tries to unjam (ms)
-const int intake_jammed_for = 100;
-// When the conveyor jams, conveyor will run backwards for this amount of time
-// (ms)
-const int intake_reverse_for = 100;
-// After getting jammed, the code cannot get stuck again for this amount of time
-// (ms)
-const int intake_was_jammed = 250;
+bool alliance_selector_toggle = 0, alliance_color, is_intake_running = 0,
+     is_flywheel_running = 0;
 std::string alliance_color_string;
 pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
+void initialize_675E(){
+  disk_sensor_bottom.calibrate();
+  disk_sensor_top.calibrate();
+  hopper_sensor_bottom.calibrate();
+  roller_optical.disable_gesture();
+}
 // Alliance Selector - Push a button to set the alliance color for rollers in
 // autonomous.
 void alliance_selector_function() {
@@ -30,31 +29,61 @@ void alliance_selector_function() {
   }
 }
 // Intake In - Fast speed for intaking and rollers.
-void intake_in_fast() { intake.move_velocity(600); }
+void intake_in_fast() {
+  is_intake_running = 1;
+  intake.move_velocity(600);
+}
 // Intake In (Slow Speed) - More torque for more precise roller control
-void intake_in_slow() { intake.move_velocity(300); }
-// Intake Out (Slow Speed) - More torque for more precise roller control
-void intake_out_slow() { intake.move_velocity(-300); }
+void intake_in_slow() {
+  is_intake_running = 1;
+  intake.move_velocity(300);
+}
 // Intake Out (Fast Speed) -  For unjamming the intake and rollers in the other
 //                            direction
-void intake_out_fast() { intake.move_velocity(-600); }
+void intake_out_fast() {
+  is_intake_running = 1;
+  intake.move_velocity(-600);
+}
+// Intake Out (Slow Speed) - More torque for more precise roller control
+void intake_out_slow() {
+  is_intake_running = 1;
+  intake.move_velocity(-300);
+}
 // Intake Stop - Stop the intake (using velocity because?)
-void intake_stop() { intake.move_velocity(0); }
+void intake_stop() {
+  is_intake_running = 0;
+  intake.move_velocity(0);
+}
 // Intake (Get Velocity) - Constructor to get the velocity of the intake
 int intake_get_velocity() { return intake.get_actual_velocity(); };
 // Flywheel Idle - Intermediate speed that the flywheel will run at when not
 //                 shooting (Good for revving up for larger shots)
-void flywheel_idle() { flywheel.move_velocity(300); }
-// Flywheel (Low Speed) - Lower speed for closer shots(Set by benny :D )
-void flywheel_low() { flywheel.move_velocity(480); }
+void flywheel_idle() {
+  is_flywheel_running = 1;
+  flywheel.move_velocity(250);
+}
+// Flywheel (Low Speed) - Lower speed for closer shots
+void flywheel_low() {
+  is_flywheel_running = 1;
+  flywheel.move_velocity(480);
+}
 // Flywheel (High Speed) - Higher speed for more distant shots or for jiggling
-//                         basket around to shift disks (Set by benny :D )
-void flywheel_high() { flywheel.move_velocity(540); }
+//                         basket around to shift disks
+void flywheel_high() {
+  is_flywheel_running = 1;
+  flywheel.move_velocity(540);
+}
 // Flywheel (Ultra High Speed) - The ultra nightmare setting in case we come up
 //                               against 4082B and need to just go full ham
-void flywheel_ultra_high() { flywheel.move_velocity(600); }
+void flywheel_ultra_high() {
+  is_flywheel_running = 1;
+  flywheel.move_velocity(600);
+}
 // Flywheel Stop - Stop the flywheel (using velocity because?)
-void flywheel_stop() { flywheel.move_velocity(0); }
+void flywheel_stop() {
+  is_flywheel_running = 0;
+  flywheel.move_velocity(0);
+}
 // Single Shoot Function - Shoot a single disk
 int single_shoot_function() {
   int single_shoot_timer = 0;
@@ -133,3 +162,13 @@ void triple_shoot() { pros::Task triple_shoot_task(triple_shoot_function); }
 void spin_to_red() { pros::Task spin_to_red_task(spin_to_red_function); }
 // Spin to Blue - Asynchronous so the bot can continue moving while spinning
 void spin_to_blue() { pros::Task spin_to_blue_task(spin_to_blue_function); }
+
+int count_disks_functio() {
+  int count = 0;
+  while (is_intake_running) {
+    if(disk_sensor_bottom.get_value()>1){
+      //"suckmydick.exe"
+    }
+  }
+  return count;
+}
