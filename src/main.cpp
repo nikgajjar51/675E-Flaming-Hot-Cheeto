@@ -44,7 +44,7 @@ void initialize() {
   pros::delay(500);
   chassis.toggle_modify_curve_with_controller(false);
   chassis.set_active_brake(0.1);
-  chassis.set_curve_default(0, 0);
+  chassis.set_curve_default(2, 2);
   default_constants();
   exit_condition_defaults();
   // Autonomous Selector using LLEMU

@@ -1,18 +1,18 @@
 /* POV Benny is dum dum and cant read code
  * V5 Smart Devices:
- * Inertial: 11
- * Optical: 1
+ * Inertial:
+ * Optical: 
  * Radio/Controller: Any
  *
  * V5 Smart Motors:
- * Drive Left Front:15
- * Drive Left Middle: 14
- * Drive Left Back:13
- * Drive Right Front:20
- * Drive Right Middle: 19
- * Drive Right Back:18
- * Intake: 6
- * Flywheel: 2
+ * Drive Left Front: 
+ * Drive Left Middle: 
+ * Drive Left Back: 
+ * Drive Right Front: 
+ * Drive Right Middle: 
+ * Drive Right Back: 
+ * Intake: 
+ * Flywheel: 
  *
  * V5 3 Wire Devices:
  * A: Line Sensor (Intake Bottom)

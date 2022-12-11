@@ -12,7 +12,7 @@ void flywheel_manual_control() {
     flywheel_low();
   } else {
     indexer_pneum.set_value(true);
-    flywheel_idle();
+    flywheel_stop();
   }
 }
 void intake_manual_control() {

@@ -1,6 +1,6 @@
 #include "main.h"
 bool alliance_selector_toggle = 0, alliance_color, is_intake_running = 0,
-     is_flywheel_running = 0, is_flywheel_idle = 0;
+     is_flywheel_running = 0;
 int intake_counter = 0;
 std::string alliance_color_string;
 pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
@@ -57,40 +57,27 @@ void intake_stop() {
 }
 // Intake (Get Velocity) - Constructor to get the velocity of the intake
 int intake_get_velocity() { return intake.get_actual_velocity(); };
-// Flywheel Idle - Intermediate speed that the flywheel will run at when not
-//                 shooting (Good for revving up for larger shots)
-void flywheel_idle() {
-  is_flywheel_running = 0;
-  is_flywheel_idle = 1;
-  flywheel.move_voltage(5000);
-}
 // Flywheel (Low Speed) - Lower speed for closer shots
 void flywheel_low() {
   is_flywheel_running = 1;
-  is_flywheel_idle = 0;
   flywheel.move_velocity(400);
 }
-// Flywheel (High Speed) - Higher speed for more distant shots or for jiggling
-//                         basket around to shift disks
+// Flywheel (High Speed)
 void flywheel_high() {
   is_flywheel_running = 1;
-  is_flywheel_idle = 0;
   flywheel.move_velocity(500);
 }
-// Flywheel (Ultra High Speed) - The ultra nightmare setting in case we come up
-//                               against 4082B and need to just go full ham
+// Flywheel (Maximum Speed)
 void flywheel_ultra_high() {
   is_flywheel_running = 1;
-  is_flywheel_idle = 0;
   flywheel.move_velocity(600);
 }
-// Flywheel Stop - Stop the flywheel (using velocity because?)
+// Flywheel (Stop)
 void flywheel_stop() {
   is_flywheel_running = 0;
-  is_flywheel_idle = 0;
   flywheel.move_velocity(0);
 }
-// Single Shoot Function - Shoot a single disk
+// Single Shoot Function
 int single_shoot_function() {
   int single_shoot_timer = 0;
   indexer_pneum.set_value(true);
@@ -99,7 +86,7 @@ int single_shoot_function() {
   pros::delay(single_shoot_timer + 1000);
   return single_shoot_timer;
 }
-// Double Shoot Function - Shoot 2 disks, typically for match preloads
+// Double Shoot Function
 int double_shoot_function() {
   int double_shoot_timer = 0;
   indexer_pneum.set_value(true);
@@ -112,7 +99,7 @@ int double_shoot_function() {
   pros::delay(double_shoot_timer + 1000);
   return double_shoot_timer;
 }
-// Triple Shoot Function - Shoot 3 disks, typically for a full hopper
+// Triple Shoot Function
 int triple_shoot_function() {
   int triple_shoot_timer = 0;
   indexer_pneum.set_value(true);
@@ -158,14 +145,15 @@ int spin_to_blue_function() {
 
 // Tasks!!!!!!!!!!!!!!!
 
-// Single Shoot - Asynchronous so the bot can continue adjusting while shooting
+// Single Shoot
 void single_shoot() { pros::Task single_shoot_task(single_shoot_function); }
-// Double Shoot - Asynchronous so the bot can continue adjusting while shooting
+// Double Shoot
 void double_shoot() { pros::Task single_shoot_task(double_shoot_function); }
-// Triple Shoot - Asynchronous so the bot can continue adjusting while shooting
+// Triple Shoot
 void triple_shoot() { pros::Task triple_shoot_task(triple_shoot_function); }
-// Shooter - Asynchronous so the bot can continue adjusting while shooting
-// Spin to Red - Asynchronous so the bot can continue moving while spinning
+// Shooter
+// Spin to Red
 //     void spin_to_red() { pros::Task spin_to_red_task(spin_to_red_function); }
-// Spin to Blue - Asynchronous so the bot can continue moving while spinning
-//     void spin_to_blue() { pros::Task spin_to_blue_task(spin_to_blue_function); }
+// Spin to Blue
+//     void spin_to_blue() { pros::Task
+//     spin_to_blue_task(spin_to_blue_function); }

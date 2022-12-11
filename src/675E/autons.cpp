@@ -116,7 +116,7 @@ void interfered_example() {
 // Right Side Auton: 3 disks high goal
 void right_side_1() {
   // Start the flywheel - Allow it to reach high speed in time
-  flywheel_idle();
+  flywheel_high();
   // Go forward - Approach the disk
   chassis.set_drive_pid(18, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
@@ -163,8 +163,7 @@ void right_side_2() {
   // Swing - Away from the roller to face the roller mech with the roller
   chassis.set_swing_pid(ez::LEFT_SWING, -75,
                         turn_speed * high_speed_multiplier);
-  flywheel_idle();
-  chassis.wait_drive();
+    chassis.wait_drive();
   // Go Forward - Move towards the roller
   chassis.set_drive_pid(28, drive_speed * high_speed_multiplier);
   chassis.wait_drive();
