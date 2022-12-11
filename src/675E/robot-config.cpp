@@ -1,30 +1,3 @@
-/* POV Benny is dum dum and cant read code
- * V5 Smart Devices:
- * Inertial:
- * Optical: 
- * Radio/Controller: Any
- *
- * V5 Smart Motors:
- * Drive Left Front: 
- * Drive Left Middle: 
- * Drive Left Back: 
- * Drive Right Front: 
- * Drive Right Middle: 
- * Drive Right Back: 
- * Intake: 
- * Flywheel: 
- *
- * V5 3 Wire Devices:
- * A: Line Sensor (Intake Bottom)
- * B: Line Sensor (Intake Top)
- * C: Line Sensor (Hopper Bottom)
- * D: Button (Alliance Selector)
- * E: Ultrasonic (Hopper, Output)
- * F: Ultrasonic (Hopper, Input)
- * G: Pneumatic (Expansion)
- * H: Pneumatic (Indexer)
- */
-
 #include "main.h"
 // V5 Motors
 pros::Motor intake(16, pros::E_MOTOR_GEARSET_06, false,

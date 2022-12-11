@@ -89,3 +89,30 @@ This repository will host all of the code as well as active changes and logs for
   * Minor fixes
 * Expansion
   * We had one...
+
+## Current Ports
+
+* V5 Smart Devices:
+  * Inertial:
+  * Optical:
+  * Radio/Controller: Any
+
+* V5 Smart Motors:
+  * Drive Left Front: 5
+  * Drive Left Middle: 4
+  * Drive Left Back: 3
+  * Drive Right Front:
+  * Drive Right Middle:
+  * Drive Right Back:
+  * Intake: 9
+  * Flywheel: 13
+
+* V5 3 Wire Devices:
+  * A: Line Sensor (Intake Bottom)
+  * B: Line Sensor (Intake Top)
+  * C: Line Sensor (Hopper Bottom)
+  * D: Button (Alliance Selector)
+  * E: Ultrasonic (Hopper, Output)
+  * F: Ultrasonic (Hopper, Input)
+  * G: Pneumatic (Expansion)
+  * H: Pneumatic (Indexer)
