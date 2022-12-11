@@ -1,11 +1,7 @@
 ---
-layout: default
-title: 675E Log and Structure
-nav_order: 1
-permalink: /
+layout: Notebook Style
+title: 675E Mini-Notebook and Code
 ---
-
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  
 
 ## Welcome
 
