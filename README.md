@@ -44,7 +44,7 @@ This repository will host all of the code as well as active changes and logs for
 * Coach and Strategist:
   * Calvin T
 
-## [Tucker HS Comp]"https://www.robotevents.com/RE-VRC-22-8924.html" - 10/15/2022
+## [Tucker HS Comp](https://www.robotevents.com/RE-VRC-22-8924.html) - 10/15/2022
 
 * Drivetrain:
   * 6 Motor, 333 RPM on 4, 3.25 omni wheels, with a 3.25 traction wheel in the center of each side
