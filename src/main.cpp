@@ -3,16 +3,16 @@
 Drive chassis(
     // Left Chassis Ports (negative port will reverse it!)
     //   the first port is the sensored port (when trackers are not used!)
-    {-15, -14, -13}
+    {-8,-9,-10}
 
     // Right Chassis Ports (negative port will reverse it!)
     //   the first port is the sensored port (when trackers are not used!)
     ,
-    {20, 19, 18}
+    {12,13,13}
 
     // IMU Port
     ,
-    11
+    17
 
     // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
     //    (or tracking wheel diameter)
@@ -51,10 +51,10 @@ void initialize() {
   ez::as::auton_selector.add_autons({
       //Auton("Right Side Auton \n\n 3 Disks", right_side_1),
       //Auton("Right Side Auton \n\n Roller and 5 disks", right_side_2),
-      Auton("Right Side Auton \n\n Roller only", right_side_3),
-      Auton("Right Side Auton \n\n Roller and preloads", right_side_4),
-      Auton("Left Side Auton \n\n Roller only", left_side_1),
-      Auton("Left Side Auton \n\n Roller and 5 disks", left_side_2),
+      //Auton("Right Side Auton \n\n Roller only", right_side_3),
+      //Auton("Right Side Auton \n\n Roller and preloads", right_side_4),
+      //Auton("Left Side Auton \n\n Roller only", left_side_1),
+      //Auton("Left Side Auton \n\n Roller and 5 disks", left_side_2),
 
   });
   chassis.initialize();
@@ -101,10 +101,6 @@ void autonomous() {
   chassis.reset_gyro();         // Reset gyro position to 0
   chassis.reset_drive_sensor(); // Reset drive sensors to 0
   chassis.set_drive_brake(MOTOR_BRAKE_HOLD);
-  
-  // Start spining the flywheel so time is not wasted in autonomous
-  //flywheel_idle();
-
   ez::as::auton_selector.call_selected_auton();
 }
 

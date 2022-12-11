@@ -1,16 +1,17 @@
 #include "main.h"
 bool alliance_selector_toggle = 0, alliance_color, is_intake_running = 0,
-     is_flywheel_running = 0;
+     is_flywheel_running = 0, is_flywheel_idle = 0;
+int intake_counter = 0;
 std::string alliance_color_string;
 pros::c::optical_rgb_s_t rgb_value = roller_optical.get_rgb();
-void initialize_675E(){
+void initialize_675E() {
   disk_sensor_bottom.calibrate();
   disk_sensor_top.calibrate();
   hopper_sensor_bottom.calibrate();
   roller_optical.disable_gesture();
 }
 // Alliance Selector - Push a button to set the alliance color for rollers in
-// autonomous.
+//                     autonomous.
 void alliance_selector_function() {
   if (alliance_selector_button.get_value() == 1) {
     if (alliance_selector_toggle) {
@@ -36,7 +37,7 @@ void intake_in_fast() {
 // Intake In (Slow Speed) - More torque for more precise roller control
 void intake_in_slow() {
   is_intake_running = 1;
-  intake.move_velocity(300);
+  intake.move_velocity(420);
 }
 // Intake Out (Fast Speed) -  For unjamming the intake and rollers in the other
 //                            direction
@@ -47,7 +48,7 @@ void intake_out_fast() {
 // Intake Out (Slow Speed) - More torque for more precise roller control
 void intake_out_slow() {
   is_intake_running = 1;
-  intake.move_velocity(-300);
+  intake.move_velocity(-150);
 }
 // Intake Stop - Stop the intake (using velocity because?)
 void intake_stop() {
@@ -59,29 +60,34 @@ int intake_get_velocity() { return intake.get_actual_velocity(); };
 // Flywheel Idle - Intermediate speed that the flywheel will run at when not
 //                 shooting (Good for revving up for larger shots)
 void flywheel_idle() {
-  is_flywheel_running = 1;
-  flywheel.move_velocity(250);
+  is_flywheel_running = 0;
+  is_flywheel_idle = 1;
+  flywheel.move_voltage(5000);
 }
 // Flywheel (Low Speed) - Lower speed for closer shots
 void flywheel_low() {
   is_flywheel_running = 1;
-  flywheel.move_velocity(480);
+  is_flywheel_idle = 0;
+  flywheel.move_velocity(400);
 }
 // Flywheel (High Speed) - Higher speed for more distant shots or for jiggling
 //                         basket around to shift disks
 void flywheel_high() {
   is_flywheel_running = 1;
-  flywheel.move_velocity(540);
+  is_flywheel_idle = 0;
+  flywheel.move_velocity(500);
 }
 // Flywheel (Ultra High Speed) - The ultra nightmare setting in case we come up
 //                               against 4082B and need to just go full ham
 void flywheel_ultra_high() {
   is_flywheel_running = 1;
+  is_flywheel_idle = 0;
   flywheel.move_velocity(600);
 }
 // Flywheel Stop - Stop the flywheel (using velocity because?)
 void flywheel_stop() {
   is_flywheel_running = 0;
+  is_flywheel_idle = 0;
   flywheel.move_velocity(0);
 }
 // Single Shoot Function - Shoot a single disk
@@ -158,17 +164,8 @@ void single_shoot() { pros::Task single_shoot_task(single_shoot_function); }
 void double_shoot() { pros::Task single_shoot_task(double_shoot_function); }
 // Triple Shoot - Asynchronous so the bot can continue adjusting while shooting
 void triple_shoot() { pros::Task triple_shoot_task(triple_shoot_function); }
+// Shooter - Asynchronous so the bot can continue adjusting while shooting
 // Spin to Red - Asynchronous so the bot can continue moving while spinning
-void spin_to_red() { pros::Task spin_to_red_task(spin_to_red_function); }
+//     void spin_to_red() { pros::Task spin_to_red_task(spin_to_red_function); }
 // Spin to Blue - Asynchronous so the bot can continue moving while spinning
-void spin_to_blue() { pros::Task spin_to_blue_task(spin_to_blue_function); }
-
-int count_disks_functio() {
-  int count = 0;
-  while (is_intake_running) {
-    if(disk_sensor_bottom.get_value()>1){
-      //"suckmydick.exe"
-    }
-  }
-  return count;
-}
+//     void spin_to_blue() { pros::Task spin_to_blue_task(spin_to_blue_function); }

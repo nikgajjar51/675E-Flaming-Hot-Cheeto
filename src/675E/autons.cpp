@@ -236,3 +236,6 @@ void left_side_1() {
 }
 // Left Side Auton: Roller and 5 disks high goals
 void left_side_2() {}
+void play_it_safe(){
+  
+}
