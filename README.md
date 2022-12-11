@@ -44,7 +44,7 @@ This repository will host all of the code as well as active changes and logs for
 * Coach and Strategist:
   * Calvin T
 
-## [Tucker HS Comp](https://www.robotevents.com/RE-VRC-22-8924.html) - 10/15/2022
+## [Tucker High School Competition](https://www.robotevents.com/RE-VRC-22-8924.html) - 10/15/2022
 
 * Drivetrain:
   * 6 Motor, 333 RPM on 4, 3.25 omni wheels, with a 3.25 traction wheel in the center of each side
@@ -58,7 +58,7 @@ This repository will host all of the code as well as active changes and logs for
   * Single Acting Cylinder on lever arm
   * Lever arm for Torque
 
-## Paul Duke HS Comp - 10/29/2022
+## [Paul Duke High School Competition](https://www.robotevents.com/RE-VRC-22-8930.html) - 10/29/2022
 
 * Drivetrain:
   * No Changes
@@ -69,7 +69,7 @@ This repository will host all of the code as well as active changes and logs for
 * Indexer:
   * Double Acting Cylinder on push in/out
 
-## Cross Ke - 10/29/2022
+## [Cross Keys High School Tournament](https://www.robotevents.com/robot-competitions/vex-robotics-competition/RE-VRC-22-9867.html) - 11/3/2022
 
 * Drivetrain:
   * Rebuilt and just cleaned up
@@ -80,4 +80,16 @@ This repository will host all of the code as well as active changes and logs for
   * Direct drive, 3600 RPM flywheel
 * Indexer:
   * Frosted Polycarbonate for less friction
-  
+
+## [GA TSA FLC Meet](https://www.robotevents.com/RE-VRC-22-9580.html) - 11/11/2022
+
+* Drivetrain:
+  * Minor fixes
+* Intake / Rollers:
+  * Minor fixes
+* Flywheel:
+  * Minor fixes
+* Indexer:
+  * Minor fixes
+* Expansion
+  * We had one...
